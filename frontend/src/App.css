@@ -1,0 +1,69 @@
+#root{
+    text-align: center;
+}
+
+.App {
+   padding-top: 5%;
+   padding-bottom: 5%;
+   display: inline-block;
+    width: 85%;
+}
+
+h1 {
+    font-size: 400%;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 3%;
+    text-align: center;
+}
+
+body {
+    background-color: #051849;
+    font-family: switzer, Arial, sans-serif;
+    line-height: 1.5;
+    color: #fff;
+}
+
+table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+td {
+    padding: 1%;
+}
+
+td, th {
+    border-bottom: 1px solid #ddd;
+}
+
+th {
+    color: #007aff;
+    font-weight: bold;
+    padding-bottom: 1.5%;
+}
+
+.positive {
+    font-weight: bold;
+    color: #38c769;
+}
+
+.negative {
+    font-weight: bold;
+    color: #c73838;
+}
+
+img {
+    width: 10%;
+    padding-right: 2%;
+}
+
+.name {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+th:nth-child(2n){
+    width: 20%;
+}
