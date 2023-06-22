@@ -1,6 +1,8 @@
 import React from "react";
 import { useTable, useSortBy } from "react-table";
 
+import './App.css'
+
 export default function SortingTable({ columns, data }) {
     const {
         getTableProps,

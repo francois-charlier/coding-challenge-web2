@@ -8,11 +8,11 @@ COPY . .
 
 RUN npm install
 
-WORKDIR /backend
+WORKDIR /app/backend
 
 RUN npm install
 
-WORKDIR ../frontend
+WORKDIR /app/frontend
 
 RUN npm install
 

@@ -1,13 +1,27 @@
-import axios from "axios";
 import React, { useMemo, useState, useEffect } from "react";
+import { MetaMaskSDK } from '@metamask/sdk';
 
-import Table from "./Table";
+import MetaMask from "./Metamask";
 import SortingTable from "./sortingTable";
 
 function App() {
 
     const currency = (data) => {
         return data.toLocaleString('de-DE', { style: 'currency', currency: 'USD' })
+    }
+
+    const compareNumericString = (rowA, rowB, id, desc) => {
+        let a = Number.parseFloat(rowA.values[id]);
+        let b = Number.parseFloat(rowB.values[id]);
+        if (Number.isNaN(a)) {  // Blanks and non-numeric strings to bottom
+            a = desc ? Number.NEGATIVE_INFINITY : Number.POSITIVE_INFINITY;
+        }
+        if (Number.isNaN(b)) {
+            b = desc ? Number.NEGATIVE_INFINITY : Number.POSITIVE_INFINITY;
+        }
+        if (a > b) return 1;
+        if (a < b) return -1;
+        return 0;
     }
 
     const columns = useMemo(
@@ -29,16 +43,18 @@ function App() {
             },
             {
                 Header: "Price ",
-                accessor: "quote.USD.price",
-                Cell: (props) => (
-                    <>
-                        <span>{currency(props.row.original.quote.USD.price)}</span>
-                    </>
-                )
+                id: 'quote.USD.price',
+                accessor: d => Number(d.quote.USD.price).toFixed(2),
+                sortMethod: (a, b) => Number(a) - Number(b),
+                Cell: (props) => {
+                    return <p>$ {Number(props.row.original.quote.USD.price).toFixed(3)}</p>;
+                }
             },
             {
                 Header: "1h % ",
-                accessor: "quote.USD.percent_change_1h",
+                id: 'quote.USD.percent_change_1h',
+                accessor: d => Number(d.quote.USD.percent_change_1h).toFixed(2),
+                sortType: compareNumericString,
                 Cell: (props) => {
                     return props.row.original.quote.USD.percent_change_1h > 0 ? (
                         <>
@@ -53,7 +69,9 @@ function App() {
             },
             {
                 Header: "24h % ",
-                accessor: "quote.USD.percent_change_24h",
+                id: 'quote.USD.percent_change_24h',
+                sortType: compareNumericString,
+                accessor: d => Number(d.quote.USD.percent_change_24h).toFixed(2),
                 Cell: (props) => {
                     return props.row.original.quote.USD.percent_change_24h > 0 ? (
                         <>
@@ -68,7 +86,9 @@ function App() {
             },
             {
                 Header: "7d % ",
-                accessor: "quote.USD.percent_change_7d",
+                id: 'quote.USD.percent_change_7d',
+                sortType: compareNumericString,
+                accessor: d => Number(d.quote.USD.percent_change_7d).toFixed(2),
                 Cell: (props) => {
                     return props.row.original.quote.USD.percent_change_7d > 0 ? (
                         <>
@@ -83,12 +103,10 @@ function App() {
             },
             {
                 Header: "Volume (24h) ",
-                accessor: "quote.USD.market_cap",
-                Cell: (props) => (
-                    <>
-                        <span>{new Intl.NumberFormat(["ban", "id"]).format((props.row.original.quote.USD.volume_24h).toFixed(2))}</span>
-                    </>
-                )
+                id: 'quote.USD.market_cap',
+                sortMethod: (a, b) => Number(a) - Number(b),
+                sortType: compareNumericString,
+                accessor: d => Number(d.quote.USD.market_cap).toFixed(2),
             }
         ],
         []
@@ -113,6 +131,7 @@ function App() {
     return (
         <div className="App">
             <h1>Coding Challenge Web 2.0</h1>
+            <MetaMask></MetaMask>
             <SortingTable columns={columns} data={data} />
         </div>
     );

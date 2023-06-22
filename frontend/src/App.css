@@ -67,3 +67,7 @@ img {
 th:nth-child(2n){
     width: 20%;
 }
+
+.metamask {
+    padding-bottom: 5%;
+}

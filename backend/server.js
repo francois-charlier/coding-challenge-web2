@@ -20,6 +20,7 @@ app.get('/api', (req, res) => {
         .then(value => res.json(value.data))
         .catch(err => console.log(err));
 });
+
 app.listen(4000, () => {
     console.log('express server');
 });
